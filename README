@@ -3,11 +3,18 @@
 Fullstack project using PostgreSQL, Express, React (Vite), and Node.js (PERN), with Docker support for both development and production environments.
 
 ---
-
 ## 📁 Project Structure
 
-pern-stack/ ├── client/ # Frontend with React + Vite ├── server/ # Backend with Express ├── Dockerfile.dev # Docker setup for development ├── Dockerfile.prod # Docker setup for production ├── docker-compose.yml # Development Compose file ├── docker-compose.prod.yml # Production Compose file ├── package.json # Global scripts └── .env # Environment variables
-
+```text
+pern-stack/
+├── client/                  # Frontend with React + Vite
+├── server/                  # Backend with Express
+├── Dockerfile.dev           # Docker setup for development
+├── Dockerfile.prod          # Docker setup for production
+├── docker-compose.yml       # Development Compose file
+├── docker-compose.prod.yml  # Production Compose file
+├── package.json             # Global scripts
+└── .env                     # Environment variables
 
 ---
 
