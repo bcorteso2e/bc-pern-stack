@@ -54,7 +54,6 @@ volumes:
   - /app/client/node_modules
 
 
-
 Make sure your .env file includes all necessary environment variables. Example: 
 
 ```env
@@ -65,7 +64,6 @@ PGHOST = your_host
 PGDATABASE = database_name
 NODE_ENV= development
 ```
-
 
 📜 Available Scripts
 
