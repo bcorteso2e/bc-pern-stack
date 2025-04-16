@@ -55,7 +55,17 @@ volumes:
 
 
 
-Make sure your .env file includes all necessary environment variables (e.g. for PostgreSQL connection).
+Make sure your .env file includes all necessary environment variables. Example: 
+
+```env
+PORT=3000
+PGUSER = your_user
+PGPASSWORD = your_password
+PGHOST = your_host
+PGDATABASE = database_name
+NODE_ENV= development
+```
+
 
 📜 Available Scripts
 
