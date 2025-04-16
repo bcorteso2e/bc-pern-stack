@@ -1,0 +1,31 @@
+
+# Build stage (frontend)
+FROM node:18 AS builder
+
+WORKDIR /app
+
+COPY package*.json ./
+COPY client/package*.json ./client/
+
+RUN npm install && npm install --prefix client
+
+COPY . .
+
+RUN npm run build --prefix client
+
+# Production stage
+FROM node:18
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci --omit=dev
+
+COPY --from=builder /app/client/dist ./client/dist
+COPY . .
+
+ENV NODE_ENV=production
+
+EXPOSE 5000
+
+CMD ["node", "server/server.js"]

@@ -1,0 +1,15 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"     # Express
+      - "5173:5173"     # Vite
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/client/node_modules
+    command: sh -c "npm run dev"
+    environment:
+      - NODE_ENV=development

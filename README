@@ -1,0 +1,61 @@
+# PERN Stack App 🚀
+
+Fullstack project using PostgreSQL, Express, React (Vite), and Node.js (PERN), with Docker support for both development and production environments.
+
+---
+
+## 📁 Project Structure
+
+pern-stack/ ├── client/ # Frontend with React + Vite ├── server/ # Backend with Express ├── Dockerfile.dev # Docker setup for development ├── Dockerfile.prod # Docker setup for production ├── docker-compose.yml # Development Compose file ├── docker-compose.prod.yml # Production Compose file ├── package.json # Global scripts └── .env # Environment variables
+
+
+---
+
+## ⚙️ Requirements
+
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
+
+---
+
+## 🚧 Development Mode
+
+> Uses [`concurrently`](https://www.npmjs.com/package/concurrently) to run both backend and frontend in a single container with hot reload support.
+
+### 📦 Install Dependencies
+
+```bash
+npm install
+npm install --prefix client
+```
+
+▶️ Run in Development
+docker-compose up --build
+
+🚀 Production Mode
+Uses docker-compose.prod.yml, builds the frontend and serves it as static files via Express.
+
+📦 Build and Deploy
+
+docker-compose -f docker-compose.prod.yml up --build
+
+📂 Notes
+node_modules folders are excluded from host to prevent conflicts with Docker volumes:
+volumes:
+  - .:/app
+  - /app/node_modules
+  - /app/client/node_modules
+
+
+
+Make sure your .env file includes all necessary environment variables (e.g. for PostgreSQL connection).
+
+📜 Available Scripts
+
+"scripts": {
+  "dev": "concurrently \"npm:server\" \"npm:client\"",
+  "server": "nodemon server/server.js",
+  "client": "npm run dev --prefix client",
+  "build": "npm install && npm install --prefix client && npm run build --prefix client",
+  "start": "node server/server.js"
+}

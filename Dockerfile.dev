@@ -1,0 +1,21 @@
+# Base image
+FROM node:18
+
+# Working directory
+WORKDIR /app
+
+# Install backend dependencies
+COPY package*.json ./
+RUN npm install
+
+# Install frontend dependencies
+COPY client/package*.json ./client/
+RUN cd client && npm install
+
+# Copy the source code
+COPY . .
+
+# Expose ports (backend and frontend)
+EXPOSE 5000 5173
+
+CMD ["npm", "run", "dev"]
