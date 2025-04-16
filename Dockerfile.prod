@@ -1,31 +1,39 @@
-
 # Build stage (frontend)
-FROM node:18 AS builder
 
+FROM node:20 AS builder
+
+# Set working directory
 WORKDIR /app
 
+# Copy package.json and package-lock.json for root and client
 COPY package*.json ./
 COPY client/package*.json ./client/
 
+# Install backend and client dependencies
 RUN npm install && npm install --prefix client
 
 COPY . .
 
+# Build the frontend using Vite
 RUN npm run build --prefix client
 
-# Production stage
-FROM node:18
+# Production stage (final)
+FROM node:20
 
+# Set working directory
 WORKDIR /app
 
 COPY package*.json ./
 RUN npm ci --omit=dev
 
+# Copy the built frontend from the builder stage
 COPY --from=builder /app/client/dist ./client/dist
+
 COPY . .
 
 ENV NODE_ENV=production
 
 EXPOSE 5000
 
+# Start the backend server
 CMD ["node", "server/server.js"]
