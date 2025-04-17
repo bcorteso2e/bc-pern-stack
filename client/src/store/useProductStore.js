@@ -92,6 +92,7 @@ export const useProductStore = create((set,get) => ({
                 currentProduct: response.data.data,
                 error: null
             })
+            toast.success('Product edited successfully')
         } catch (error) {
             console.log(error)
             set({error: 'Something went wrong', currentProduct: null})

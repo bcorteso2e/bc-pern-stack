@@ -23,7 +23,7 @@ function AddProductModal() {
                 <span className="label-text text-base font-medium">Product Name</span>
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-base-content/50">
+                <div className="absolute z-10 inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-base-content/50">
                   <Package2Icon className="size-5" />
                 </div>
                 <input
@@ -42,7 +42,7 @@ function AddProductModal() {
                 <span className="label-text text-base font-medium">Price</span>
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-base-content/50">
+                <div className="absolute z-10 inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-base-content/50">
                   <DollarSignIcon className="size-5" />
                 </div>
                 <input
@@ -63,7 +63,7 @@ function AddProductModal() {
                 <span className="label-text text-base font-medium">Image URL</span>
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-base-content/50">
+                <div className="absolute z-10 inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-base-content/50">
                   <ImageIcon className="size-5" />
                 </div>
                 <input
