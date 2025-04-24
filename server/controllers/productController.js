@@ -1,97 +1,115 @@
-import { sql } from "../config/db.js";
+import prisma from "../db/prisma.js";
 
 export const getProducts = async (req, res) => {
-    try {
-        
-        const products = await sql`
-            SELECT * FROM products ORDER BY created_at DESC
-        `;
+  try {
+    const products = await prisma.product.findMany({
+      orderBy: {
+        created_at: "desc",
+      },
+    });
+    console.log("Products =>", products);
 
-        res.status(200).json({success:true, data: products})
-    } catch (error) {
-        console.log('Error in getProducts function', error);
-        res.status(500).json({success: false, message: 'Internal Server Error'})
-    }
-}
+    res.status(200).json({ success: true, data: products });
+  } catch (error) {
+    console.log("Error in getProducts function", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
 
 export const createProduct = async (req, res) => {
+  const { name, price, image } = req.body;
 
-    const {name, price, image} = req.body
+  if (!name || !price || !image) {
+    return res
+      .status(400)
+      .json({ success: false, message: "All fields are required" });
+  }
 
-
-    if (!name || !price || !image) {
-        return res.status(400).json({success: false, message: 'All fields are required'})
-    }
-
-    try {
-        const newProduct = await sql`
-        INSERT INTO products (name,price,image) VALUES (${name}, ${price}, ${image}) RETURNING *
-    `;
-    res.status(201).json({success: true, data: newProduct[0]})
-    } catch (error) {
-        console.log('Error createProduct function', error);
-        res.status(500).json({success: false, message: 'Internal Server Error'})
-    }
-}
+  try {
+    const newProduct = await prisma.product.create({
+      data: {
+        name,
+        price: parseFloat(price),
+        image,
+      },
+    });
+    res.status(201).json({ success: true, data: newProduct });
+  } catch (error) {
+    console.log("Error createProduct function", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
 
 export const getProduct = async (req, res) => {
-    const { id } = req.params; 
-    try {
-        const product = await sql`
-        SELECT * FROM products WHERE id=${id}
-    `;
-    res.status(200).json({success: true, data: product[0]})
-    } catch (error) {
-        console.log('Error getProduct function', error);
-        res.status(500).json({success: false, message: 'Internal Server Error'})
+  const { id } = req.params;
+
+  try {
+    const product = await prisma.product.findUnique({
+      where: { id: parseInt(id) },
+    });
+
+    if (!product) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
     }
-}
+
+    res.status(200).json({ success: true, data: product });
+  } catch (error) {
+    console.log("Error getProduct function", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
 
 export const updateProduct = async (req, res) => {
-    const { id } = req.params
-    const { name, price, image } = req.body
+  const { id } = req.params;
+  const { name, price, image } = req.body;
 
+  if (!name || !price || !image) {
+    return res
+      .status(400)
+      .json({ success: false, message: "All fields are required" });
+  }
 
-    if (!name || !price || !image) {
-        return res.status(400).json({success: false, message: 'All fields are required'})
+  try {
+    const updatedProduct = await prisma.product.update({
+      where: { id: parseInt(id) },
+      data: {
+        name,
+        price: parseFloat(price),
+        image,
+      },
+    });
+
+    res.status(200).json({ success: true, data: updatedProduct });
+  } catch (error) {
+    console.log("Error updateProduct function", error);
+    if (error.code === "P2025") {
+      // Prisma error: record not found
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
     }
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
 
-    try {
-        const updateProduct = await sql`
-        UPDATE products SET name=${name}, price=${price}, image=${image} 
-        WHERE id=${id} RETURNING *
-        `   ;
-        if (updateProduct.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "Product not found"
-            })
-        }
+export const deleteProduct = async (req, res) => {
+  const { id } = req.params;
 
-        res.status(200).json({ success: true, data: updateProduct[0]})
-    } catch (error) {
-        console.log('Error updateProduct function', error);
-        res.status(500).json({success: false, message: 'Internal Server Error'})
+  try {
+    const deletedProduct = await prisma.product.delete({
+      where: { id: parseInt(id) },
+    });
+
+    res.status(200).json({ success: true, data: deletedProduct });
+  } catch (error) {
+    console.log("Error deleteProduct function", error);
+    if (error.code === "P2025") {
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
     }
-}
-
-export const deleteProduct = async(req, res) => {
-    const { id } = req.params
-
-    try {
-        const deletedProduct = await sql`
-        DELETE FROM products WHERE id=${id} RETURNING *
-       `;
-
-       if (deletedProduct.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "Product not found"
-            })
-        }
-        res.status(200).json({ success: true, data: deletedProduct[0]})
-    }catch (error) {
-        console.log('Error deleteProduct function', error);
-        res.status(500).json({success: false, message: 'Internal Server Error'})
-    }
-}
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};

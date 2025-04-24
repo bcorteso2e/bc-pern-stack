@@ -44,6 +44,7 @@ export const useProductStore = create((set,get) => ({
         } catch (error) {
             console.log(error);
             toast.error('Something went wrong')
+            document.getElementById('add_product_modal').close()
         } finally {
             set({loading: false})
         }
