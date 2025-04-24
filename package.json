@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "server/server.js",
   "scripts": {
-    "dev": "concurrently \"npm run dev-server\" \"npm run dev-client\"",
+    "predev": "npx prisma generate",
+    "dev": "npm run predev && concurrently \"npm run dev-server\" \"npm run dev-client\"",
     "dev-server": "nodemon server/server.js",
     "dev-client": "cd client && npm run dev",
     "build": "npm install && npm install --prefix client && npm run build --prefix client",
