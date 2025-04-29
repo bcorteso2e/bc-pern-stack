@@ -7,8 +7,7 @@ import morgan from "morgan";
 import cors from "cors";
 import path from "path";
 import productRoutes from "./routes/productRoutes.js";
-import prisma from "./db/prisma.js";
-
+import authRoutes from './routes/authRoutes.js';
 
 const app = express();
 
@@ -27,6 +26,7 @@ app.use(
 app.use(morgan("dev"));
 
 app.use("/api/products", productRoutes);
+app.use('/api/auth', authRoutes)
 
 if (process.env.NODE_ENV === "production") {
   // server our react app
