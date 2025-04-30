@@ -6,6 +6,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import cors from "cors";
 import path from "path";
+import cookieParser from "cookie-parser";
 import productRoutes from "./routes/productRoutes.js";
 import authRoutes from './routes/authRoutes.js';
 
@@ -14,8 +15,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const __dirname = path.resolve();
 
-console.log(__dirname);
-
+app.use(cookieParser()); 
 app.use(express.json());
 app.use(cors());
 app.use(
