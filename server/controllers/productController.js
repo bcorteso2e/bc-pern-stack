@@ -4,7 +4,7 @@ export const getProducts = async (req, res) => {
   try {
     const products = await prisma.product.findMany({
       orderBy: {
-        created_at: "desc",
+        createdAt: "desc",
       },
     });
     console.log("Products =>", products);
@@ -17,9 +17,9 @@ export const getProducts = async (req, res) => {
 };
 
 export const createProduct = async (req, res) => {
-  const { name, price, image } = req.body;
+  const { name, price, image, description, category } = req.body;
 
-  if (!name || !price || !image) {
+  if (!name || !price || !image || !description || !category) {
     return res
       .status(400)
       .json({ success: false, message: "All fields are required" });
@@ -31,6 +31,8 @@ export const createProduct = async (req, res) => {
         name,
         price: parseFloat(price),
         image,
+        description,
+        category
       },
     });
     res.status(201).json({ success: true, data: newProduct });

@@ -1,4 +1,4 @@
-import { DollarSignIcon, ImageIcon, Package2Icon, PlusCircleIcon } from "lucide-react";
+import { DollarSignIcon, ImageIcon, Package2Icon, PlusCircleIcon, TagsIcon, AlignLeftIcon  } from "lucide-react";
 import { useProductStore } from "../store/useProductStore";
 
 function AddProductModal() {
@@ -56,6 +56,46 @@ function AddProductModal() {
                 />
               </div>
             </div>
+
+            {/* PRODUCT CATEGORY INPUT */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text text-base font-medium">Category</span>
+              </label>
+              <div className="relative">
+                <div className="absolute z-10 inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-base-content/50">
+                  <TagsIcon className="size-5" />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Category product"
+                  className="input input-bordered w-full pl-10 py-3 focus:input-primary transition-colors duration-200"
+                  value={formData.category}
+                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                />
+              </div>
+            </div>
+
+
+            {/* PRODUCT DESCRIPTION INPUT */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text text-base font-medium">Description</span>
+              </label>
+              <div className="relative">
+                <div className="absolute z-10 inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-base-content/50">
+                  <AlignLeftIcon className="size-5" />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Description product"
+                  className="input input-bordered w-full pl-10 py-3 focus:input-primary transition-colors duration-200"
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                />
+              </div>
+            </div>
+
 
             {/* PRODUCT IMAGE */}
             <div className="form-control">
